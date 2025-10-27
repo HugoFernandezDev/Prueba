@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrarse - Sumaq Mikuy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+</head>
+
+<body class="h-screen overflow-hidden font-sans">
+
+  <div class="flex w-full h-screen">
+
+    <div 
+      class="hidden md:block md:w-3/5 bg-cover bg-center"
+      style="background-image: url('{{ url_for('static', filename='images/login.jpg') }}');">
+    </div>
+    <div class="w-full md:w-2/5 flex flex-col justify-center items-center p-12 bg-[#383b33] overflow-y-auto">
+      
+      <form method="POST" action="{{ url_for('register') }}" class="w-full max-w-sm text-center">
+        
+        <img 
+          src="{{ url_for('static', filename='icon/logo.png') }}" 
+          alt="Logo" 
+          class="w-40 h-auto mb-4 mx-auto transition-transform duration-300 hover:scale-105" />
+        
+        <h2 class="text-4xl font-bold text-amber-400 mb-2">Crear Cuenta</h2>
+        
+        <p class="text-amber-400 mb-8 text-base leading-relaxed">
+          Únete a nuestra familia andina.<br>Regístrate para reservar y disfrutar.
+        </p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <p class="text-red-500 mb-4">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <input 
+          type="text" 
+          name="nombres" 
+          placeholder="Nombre" 
+          required 
+          class="w-full py-3 px-4 mb-4 rounded-lg border-0 bg-zinc-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600" />
+
+          <input 
+          type="text" 
+          name="apellidos" 
+          placeholder="Apellidos" 
+          required 
+          class="w-full py-3 px-4 mb-4 rounded-lg border-0 bg-zinc-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600" />
+        <input 
+          type="text" 
+          name="direccion"
+          placeholder="Dirección" 
+          required 
+          class="w-full py-3 px-4 mb-4 rounded-lg border-0 bg-zinc-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600" />
+
+        <input 
+          type="text" 
+          name="celular"
+          placeholder="Celular" 
+          pattern="[0-9]{9}" 
+          maxlength="9" 
+          required 
+          class="w-full py-3 px-4 mb-4 rounded-lg border-0 bg-zinc-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600" />
+
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="tucorreo.aqui@ejem.com" 
+          required 
+          class="w-full py-3 px-4 mb-4 rounded-lg border-0 bg-zinc-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600" />
+        
+        <input 
+          type="password" 
+          name="password"
+          placeholder="Contraseña (mínimo 6 caracteres)" 
+          minlength="6" 
+          required 
+          class="w-full py-3 px-4 mb-4 rounded-lg border-0 bg-zinc-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-600" />
+
+        <button 
+          type="submit"
+          class="w-full py-3 bg-green-600 text-white font-bold rounded-lg cursor-pointer transition duration-300 hover:bg-green-700">
+          Registrarse
+        </button>
+        <a href="{{ url_for('login') }}" class="block mt-4 text-green-300 text-sm hover:underline">
+          ¿Ya tienes una cuenta? Inicia sesión
+        </a>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

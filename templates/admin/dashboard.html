@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - Sumaq Mikuy</title>
+  <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+</head>
+<body style="background: linear-gradient(135deg, rgba(180, 83, 9, 0.9) 0%, rgba(217, 119, 6, 0.8) 50%, rgba(245, 158, 11, 0.9) 100%), url('https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=1920&q=80') center/cover fixed; min-height: 100vh;">
+  
+  <!-- Navbar Admin -->
+  <nav class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <h1 class="text-3xl font-black tracking-tight">
+            <span class="text-white">PANEL</span>
+            <span class="text-amber-300"> ADMINISTRATIVO</span>
+          </h1>
+        </div>
+        <div class="flex items-center space-x-6">
+          <span class="text-purple-200">{{ session.admin_nombre }}</span>
+          <a href="{{ url_for('logout') }}" class="bg-amber-900 hover:bg-amber-800 px-4 py-2 rounded-lg transition">
+            Cerrar Sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Menú de navegación -->
+  <div class="bg-gradient-to-r from-white to-amber-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex space-x-4 py-3">
+        <a href="{{ url_for('admin_dashboard') }}" class="px-6 py-2 bg-amber-600 text-white font-bold rounded-lg hover:bg-amber-700 hover:scale-105 transition-all shadow-md">
+          Dashboard
+        </a>
+        <a href="{{ url_for('admin_usuarios') }}" class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-amber-600 hover:scale-105 transition-all">
+          Usuarios
+        </a>
+        <a href="{{ url_for('admin_platos') }}" class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-amber-600 hover:scale-105 transition-all">
+          Platos
+        </a>
+        <a href="{{ url_for('admin_reservas') }}" class="px-6 py-2 bg-gray-600 text-white font-semibold rounded-lg hover:bg-amber-600 hover:scale-105 transition-all">
+          Reservas
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    
+    <!-- Mensajes Flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="mb-4 p-4 rounded-lg {% if category == 'success' %}bg-green-100 text-green-800{% elif category == 'danger' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h2 class="text-3xl font-bold text-white mb-6">Estadísticas Generales</h2>
+
+    <!-- Tarjetas de estadísticas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      
+      <!-- Total Usuarios -->
+      <div class="bg-blue-600 rounded-xl shadow-2xl p-6 text-white cursor-pointer" style="border: 4px solid black; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 25px 50px -12px rgba(0,0,0,0.25)';">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-blue-100 text-sm font-semibold">Usuarios Registrados</p>
+            <p class="text-4xl font-bold mt-2">{{ stats.total_usuarios }}</p>
+          </div>
+          <div class="bg-blue-500 rounded-full p-3">
+            <span class="text-4xl">👥</span>
+          </div>
+        </div>
+        <a href="{{ url_for('admin_usuarios') }}" class="text-blue-100 text-sm mt-4 inline-block hover:underline">
+          Ver todas →
+        </a>
+      </div>
+
+      <!-- Total Reservas -->
+      <div class="bg-green-600 rounded-xl shadow-2xl p-6 text-white cursor-pointer" style="border: 4px solid black; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 25px 50px -12px rgba(0,0,0,0.25)';">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-green-100 text-sm font-semibold">Total Reservas</p>
+            <p class="text-4xl font-bold mt-2">{{ stats.total_reservas }}</p>
+          </div>
+          <div class="bg-green-500 rounded-full p-3">
+            <span class="text-4xl">📋</span>
+          </div>
+        </div>
+        <a href="{{ url_for('admin_reservas') }}" class="text-green-100 text-sm mt-4 inline-block hover:underline">
+          Ver todas →
+        </a>
+      </div>
+
+      <!-- Reservas Pendientes -->
+      <div class="bg-yellow-500 rounded-xl shadow-2xl p-6 text-white cursor-pointer" style="border: 4px solid black; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 25px 50px -12px rgba(0,0,0,0.25)';">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-yellow-50 text-sm font-semibold">Reservas Pendientes</p>
+            <p class="text-4xl font-bold mt-2">{{ stats.reservas_pendientes }}</p>
+          </div>
+          <div class="bg-yellow-400 rounded-full p-3">
+            <span class="text-4xl">⏳</span>
+          </div>
+        </div>
+        <a href="{{ url_for('admin_reservas') }}?estado=pendiente" class="text-yellow-50 text-sm mt-4 inline-block hover:underline">
+          Revisar →
+        </a>
+      </div>
+
+      <!-- Reservas Hoy -->
+      <div class="bg-amber-600 rounded-xl shadow-2xl p-6 text-white cursor-pointer" style="border: 4px solid black; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.5)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 25px 50px -12px rgba(0,0,0,0.25)';">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-amber-100 text-sm font-semibold">Reservas Hoy</p>
+            <p class="text-4xl font-bold mt-2">{{ stats.reservas_hoy }}</p>
+          </div>
+          <div class="bg-amber-500 rounded-full p-3">
+            <span class="text-4xl">📅</span>
+          </div>
+        </div>
+        <p class="text-amber-100 text-sm mt-4">
+          🍽️ {{ stats.total_platos }} platos activos
+        </p>
+      </div>
+
+    </div>
+    <!-- Accesos rápidos -->
+    <div class="bg-white rounded-lg shadow-xl p-6">
+      <h3 class="text-xl font-bold text-gray-900 mb-4">Accesos Rápidos</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="{{ url_for('admin_usuarios') }}" class="border-2 border-amber-300 bg-amber-100 hover:bg-amber-200 rounded-lg p-6 text-center transition-all hover:scale-105 hover:shadow-lg">
+          <div class="text-5xl mb-3">👥</div>
+          <div class="font-black text-gray-900 text-lg">Gestionar Usuarios</div>
+        </a>
+        <a href="{{ url_for('admin_platos') }}" class="border-2 border-amber-300 bg-amber-100 hover:bg-amber-200 rounded-lg p-6 text-center transition-all hover:scale-105 hover:shadow-lg">
+          <div class="text-5xl mb-3">🍽️</div>
+          <div class="font-black text-gray-900 text-lg">Gestionar Platos</div>
+        </a>
+        <a href="{{ url_for('admin_reservas') }}" class="border-2 border-amber-300 bg-amber-100 hover:bg-amber-200 rounded-lg p-6 text-center transition-all hover:scale-105 hover:shadow-lg">
+          <div class="text-5xl mb-3">📋</div>
+          <div class="font-black text-gray-900 text-lg">Ver Reservas</div>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

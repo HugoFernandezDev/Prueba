@@ -71,8 +71,9 @@ def login_required(f):
 
 @app.route('/')
 def index():
-    """Sirve la página principal (Home)."""
-    return render_template('index.html')
+    respuesta = make_response(render_template('index.html'))
+    respuesta.headers['Content-Security-Policy'] = "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com"
+    return respuesta
 
 @app.route('/nosotros')
 def nosotros():

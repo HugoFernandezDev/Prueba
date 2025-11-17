@@ -953,3 +953,6 @@ def chatbot_response():
         print(f"An unexpected error occurred: {e}")
         return jsonify({"response": "Ocurrió un error inesperado."}), 500
 
+# --- PUNTO DE ENTRADA ---
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

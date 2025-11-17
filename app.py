@@ -12,13 +12,6 @@ import hashlib
 from config import DB_CONFIG
 import requests
 import json
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return "Flask funcionando en Render"
 
 # --- Configuración de la Aplicación ---
 app = Flask(__name__)

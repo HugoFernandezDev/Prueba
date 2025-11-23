@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto | Sumaq Mikuy</title>
+  <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/contacto.css') }}" rel="stylesheet">
+  <script defer src="{{ url_for('static', filename='js/contacto.js') }}"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-amber-100 text-stone-800 font-sans overflow-x-hidden">
+
+  <!-- MENU DE NAVEGACION (CABEZERA) -->
+  <nav class="w-full fixed top-0 left-0 z-50 bg-white/70 backdrop-blur-md border-b border-amber-200">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-amber-800 tracking-wide">Sumaq Mikuy</h1>
+      <a href="{{ url_for('index') }}" class="bg-amber-700 hover:bg-amber-800 text-white px-5 py-2 rounded-xl shadow-lg transition">
+        Volver al Inicio
+      </a>
+    </div>
+  </nav>
+
+  <main class="pt-28 pb-20 max-w-3xl mx-auto px-6 space-y-16">
+
+  <!-- FORMULARIO DE EXPERIENCIA -->
+  <section class="formulario bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-10 transform transition hover:-translate-y-1">
+      <h2 class="text-4xl font-bold text-amber-800 mb-2 tracking-tight">Tu experiencia en Sumaq Mikuy</h2>
+      <p class="text-stone-600 mb-6">Queremos conocer tu visita, tus sabores favoritos y cómo podemos mejorar </p>
+
+      <form id="formContacto" method="POST" class="space-y-6">
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">Nombre completo</label>
+          <input type="text" name="nombre" required placeholder="Ej. Juan Pérez"
+            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-600 outline-none">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">Correo electrónico</label>
+          <input type="email" name="email" required placeholder="tucorreo@ejemplo.com"
+            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-600 outline-none">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">Fecha de tu visita</label>
+          <input type="date" name="fecha" required
+            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-600 outline-none">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">¿Cuál fue tu plato favorito?</label>
+          <input type="text" name="plato" placeholder="Ej. Ají de gallina andino"
+            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-600 outline-none">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">¿Cómo calificarías tu experiencia?</label>
+          <select name="calificacion" required
+            class="w-full px-4 py-2 rounded-lg border border-amber-200 focus:ring-2 focus:ring-amber-600 outline-none">
+            <option value="">Selecciona una opción</option>
+            <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+            <option value="4">⭐⭐⭐⭐ Muy buena</option>
+            <option value="3">⭐⭐⭐ Buena</option>
+            <option value="2">⭐⭐ Regular</option>
+            <option value="1">⭐ Mala</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">¿Nos recomendarías?</label>
+          <div class="flex gap-6 mt-2">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="recomienda" value="Sí" required>
+              <span>Sí</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="recomienda" value="No">
+              <span>No</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">Comentarios adicionales</label>
+          <textarea name="mensaje" rows="5" required placeholder="Cuéntanos tu experiencia..."
+            class="w-full px-4 py-2 rounded-lg border border-amber-100 focus:ring-2 focus:ring-amber-600 outline-none resize-none"></textarea>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-amber-700 hover:bg-amber-800 text-white py-3 rounded-xl font-semibold shadow-lg transition-all transform hover:scale-[1.02]">
+          Enviar mensaje
+        </button>
+      </form>
+
+      <p id="mensajeConfirmacion" class="hidden mt-6 text-center text-green-700 font-medium bg-green-100 py-2 rounded-lg"></p>
+    </section>
+
+     <!-- UBICACIÓN DEL LOCAL -->
+ <section class="bg-white text-stone-800 rounded-3xl shadow-2xl overflow-hidden border border-amber-200">
+  <div class="grid grid-cols-1 md:grid-cols-2">
+
+    <!-- Información DE UBICACION/HORARIO DE ATENCION/TELEFONO DE CONTACTO -->
+    <div class="flex flex-col justify-center p-10 space-y-6 bg-gradient-to-br from-amber-50 via-stone-100 to-amber-100">
+      <h3 class="text-4xl font-bold text-amber-800 tracking-tight"> Nos Ubicamos </h3>
+
+      <div class="space-y-5 text-base">
+        <div class="flex items-start gap-4">
+          <div class="text-amber-600 text-2xl"></div>
+          <div>
+            <p class="font-semibold text-stone-700">Dirección</p>
+            <p>Calle Miraflores Mz 39, San Luis, Cañete</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="text-amber-600 text-2xl"></div>
+          <div>
+            <p class="font-semibold text-stone-700">Horario</p>
+            <p>Sábado y Domingo — 07:00 a.m. a 7:00 p.m.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="text-amber-600 text-2xl"></div>
+          <div>
+            <p class="font-semibold text-stone-700">Teléfono</p>
+            <p>+51 987 654 321</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="https://www.google.com/maps?q=Calle+Miraflores+Mz+39,+San+Luis,+Cañete,+Perú" target="_blank"
+         class="inline-block mt-6 bg-amber-700 hover:bg-amber-800 text-white font-semibold px-5 py-3 rounded-xl shadow-lg transition-all transform hover:scale-[1.03]">
+        Ver en Google Maps
+      </a>
+    </div>
+
+    <!-- Mapa interactivo  GOOGLE MAPS -->
+    <div class="relative min-h-[384px] md:h-auto">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.907065989246!2d-76.3858!3d-12.6485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9110b930ff000001%3A0x2f61a13c8748b9e2!2sSan%20Luis%2C%20Cañete!5e0!3m2!1ses!2spe!4v1697234950029!5m2!1ses!2spe"
+        class="absolute inset-0 w-full h-full"
+        style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      <div class="absolute inset-0 bg-black/10 hover:bg-transparent transition duration-500"></div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>

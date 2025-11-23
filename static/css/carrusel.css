@@ -1,0 +1,39 @@
+/* Configuración de fuente y colores temáticos */
+:root {
+    --color-primary: #FFD700; /* Dorado Andino/Amarillo principal */
+    --color-secondary: #4A2E1F; /* Marrón oscuro/tierra */
+}
+.text-primary { color: var(--color-primary); }
+.bg-primary { background-color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.bg-secondary { background-color: var(--color-secondary); }
+
+/* Uso de una fuente elegante para el logo, si no se tiene una específica */
+.font-serif-custom { font-family: 'Georgia', 'Times New Roman', serif; }
+
+/* Estilos generales para el cuerpo y transiciones */
+body {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* --- Estilos para el Carrusel --- */
+.carousel-item {
+    display: none;
+    /* Usamos object-cover para asegurar que la imagen cubra todo el espacio sin distorsión */
+    object-fit: cover;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+/* Animación simple de desvanecimiento para la transición */
+.fade-in {
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}

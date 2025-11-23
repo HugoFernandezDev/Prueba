@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumaq Mikuy - Alta Cocina Andina</title>
+    
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/carrusel.css') }}" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-50">
+    <nav id="mainNav" class="nav-fixed fixed top-0 z-50 bg-transparent text-white shadow-none transition-all duration-500 ease-in-out">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            
+            <a href="#inicio" id="navLogo" class="text-3xl font-bold text-primary transition duration-300 flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 transition duration-500 transform hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span class="hidden md:block text-2xl font-serif-custom tracking-widest" id="logoText">Sumaq Mikuy</span>
+            </a>
+            
+            <div id="desktopNavLinks" class="hidden md:flex space-x-6 items-center bg-transparent p-2">
+                <a href="#inicio" id="nav-inicio" class="text-white hover:text-primary transition duration-300 font-medium hover:underline underline-offset-4">Inicio</a>
+                <a href="#nosotros" id="nav-nosotros" class="text-white hover:text-primary transition duration-300 font-medium hover:underline underline-offset-4">Nosotros</a>
+                <a href="#menu" id="nav-menu" class="text-white hover:text-primary transition duration-300 font-medium hover:underline underline-offset-4">Menú</a>
+                <a href="#contacto" id="nav-contacto" class="text-white hover:text-primary transition duration-300 font-medium hover:underline underline-offset-4">Contacto</a>
+                
+                <a href="{{ url_for('login') }}" class="bg-white text-secondary font-bold py-2 px-6 rounded-full shadow-md transition duration-300 hover:bg-gray-200 ml-4" id="loginButton" title="Iniciar Sesión">
+                    Iniciar Sesión
+                </a>
+            </div>
+            
+            <button id="mobileMenuButton" class="md:hidden text-primary text-2xl p-2 focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div id="mobileMenu" class="md:hidden hidden bg-secondary/95 pb-4">
+            <a href="#inicio" class="block w-full text-center py-3 text-white hover:text-primary hover:bg-secondary/70 transition duration-300 border-t border-gray-700">Inicio</a>
+            <a href="#nosotros" class="block w-full text-center py-3 text-white hover:text-primary hover:bg-secondary/70 transition duration-300 border-t border-gray-700">Nosotros</a>
+            <a href="#menu" class="block w-full text-center py-3 text-white hover:text-primary hover:bg-secondary/70 transition duration-300 border-t border-gray-700">Menú</a>
+            <a href="#contacto" class="block w-full text-center py-3 text-white hover:text-primary hover:bg-secondary/70 transition duration-300 border-t border-gray-700">Contacto</a>
+            <a href="{{ url_for('login') }}" class="w-11/12 mx-auto mt-4 block bg-primary text-secondary text-center font-bold py-2 px-6 rounded-lg hover:bg-yellow-400 transition duration-300 shadow-md">
+                Iniciar Sesión
+            </a>
+        </div>
+    </nav>
+
+    <header id="inicio" class="relative w-full h-screen overflow-hidden">
+        
+        <div id="carousel" class="w-full h-full relative">
+            
+            <div class="carousel-item active absolute inset-0 transition-opacity duration-500 fade-in">
+                <img src="{{ url_for('static', filename='images/experiencia1.png') }}" 
+                     alt="Experiencia Gastronómica Andina 1" 
+                     class="w-full h-full bg-secondary object-cover">
+            </div>
+
+            <div class="carousel-item absolute inset-0 transition-opacity duration-500">
+                <img src="{{ url_for('static', filename='images/experiencia2.png') }}" 
+                     alt="Experiencia Gastronómica Andina 2" 
+                     class="w-full h-full object-cover">
+            </div>
+
+            <div class="carousel-item absolute inset-0 transition-opacity duration-500">
+                <img src="{{ url_for('static', filename='images/experiencia3.png') }}" 
+                     alt="Experiencia Gastronómica Andina 3" 
+                     class="w-full h-full object-cover">
+            </div>
+            
+            <div class="absolute inset-0 bg-secondary opacity-60"></div>
+            
+            <div class="container mx-auto px-4 relative z-10 text-center flex flex-col items-center justify-center h-full text-white">
+                <h1 class="text-7xl md:text-9xl font-bold tracking-tight mb-2 font-serif-custom drop-shadow-lg">
+                    SUMAQ MIKUY
+                </h1>
+                <p class="text-xl md:text-2xl font-light mb-10 italic drop-shadow-md">
+                    "Vive la magia de los Andes en una experiencia gastronómica única"
+                </p>
+
+                <button onclick="window.location.href = '{{ url_for('mostrar_reserva') }}'"
+                    class="bg-primary text-secondary font-bold py-3 px-8 md:py-4 md:px-12 rounded-xl uppercase text-lg md:text-xl tracking-wider hover:bg-yellow-400 transition duration-300 shadow-xl transform hover:scale-105">
+                    Reservar Mesa Ahora
+                </button>
+            </div>
+
+            <button id="prevBtn" 
+                    class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-3 rounded-full shadow-lg z-20 transition focus:outline-none">
+                <i class="fas fa-chevron-left text-xl"></i>
+            </button>
+
+            <button id="nextBtn" 
+                    class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-3 rounded-full shadow-lg z-20 transition focus:outline-none">
+                <i class="fas fa-chevron-right text-xl"></i>
+            </button>
+            
+            <div id="dotIndicators" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+            </div>
+
+        </div>
+    </header>
+
+    <hr class="border-gray-200 w-4/5 mx-auto">
+
+    <section id="nosotros" class="h-screen flex items-center justify-center bg-white">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center space-y-10 md:space-y-0 md:space-x-16">
+            <div class="md:w-1/2">
+                <img src="{{ url_for('static', filename='images/chef.png') }}"
+                    alt="Imagen de un plato andino de alta cocina" class="w-full h-auto rounded-lg shadow-2xl">
+            </div>
+            <div class="md:w-1/2">
+                <h2 class="text-5xl font-bold mb-6 text-secondary">LEGADO Y VISIÓN GLOBAL</h2>
+                <p class="text-xl text-gray-700 mb-6 leading-relaxed">
+                    Nuestra misión en Sumaq Mikuy es llevar la riqueza de la gastronomía andina a la cúspide mundial. 
+                    Utilizamos ingredientes ancestrales y técnicas de alta cocina para crear platos que narran la historia de los Andes.
+                    Buscamos ser reconocidos a nivel nacional e internacional como el epicentro del sabor andino auténtico y refinado.
+                </p>
+                <button
+                    class="border-2 border-primary text-secondary font-bold py-3 px-8 rounded-xl uppercase tracking-wider hover:bg-primary transition duration-300 text-sm">
+                    Conoce Nuestra Historia
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-gray-200 w-4/5 mx-auto">
+
+    <section id="menu" class="relative h-screen flex items-center justify-center bg-secondary text-white bg-cover bg-center"
+        style="background-image: url('{{ url_for('static', filename='images/textura3.png') }}');">
+        <div class="absolute inset-0 bg-secondary opacity-50"></div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h2 class="text-5xl font-bold mb-4 text-primary">NUESTRAS ESPECIALIDADES ANDINAS</h2>
+            <p class="text-gray-300 mb-12 max-w-2xl mx-auto text-lg">
+                Descubre los sabores auténticos de la gastronomía andina, elaborados con ingredientes frescos de la sierra 
+                y recetas tradicionales que han pasado de generación en generación.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-10">
+                
+                <div class="max-w-xs bg-gray-800/70 p-6 rounded-xl shadow-2xl border-t-4 border-primary transform hover:scale-[1.02] transition duration-300">
+                    <img src="{{ url_for('static', filename='images/menu/cuychactado.png') }}" class="w-full h-48 object-cover rounded-lg mb-4" alt="Cuy Chactado">
+                    <h3 class="text-2xl font-bold mt-2 mb-2">Cuy Chactado</h3>
+                    <p class="text-sm text-gray-400 italic">
+                        Cuy frito al estilo andino, acompañado con papas doradas y ensalada criolla.
+                    </p>
+                </div>
+                
+                <div class="max-w-xs bg-gray-800/70 p-6 rounded-xl shadow-2xl border-t-4 border-primary transform hover:scale-[1.02] transition duration-300">
+                    <img src="{{ url_for('static', filename='images/menu/caldodemote.png') }}" class="w-full h-48 object-cover rounded-lg mb-4" alt="Caldo de Mote">
+                    <h3 class="text-2xl font-bold mt-2 mb-2">Caldo de Mote</h3>
+                    <p class="text-sm text-gray-400 italic">
+                        Sopa espesa con mote de maíz, carne de res, papa y hierbas aromáticas.
+                    </p>
+                </div>
+
+                <div class="max-w-xs bg-gray-800/70 p-6 rounded-xl shadow-2xl border-t-4 border-primary transform hover:scale-[1.02] transition duration-300">
+                    <img src="{{ url_for('static', filename='images/menu/pachamanca.png') }}" class="w-full h-48 object-cover rounded-lg mb-4" alt="Pachamanca">
+                    <h3 class="text-2xl font-bold mt-2 mb-2">Pachamanca</h3>
+                    <p class="text-sm text-gray-400 italic">
+                        Carne de cerdo, pollo y res cocidas con hierbas andinas, papas, habas y camote.
+                    </p>
+                </div>
+            </div>
+            
+            <button
+                class="mt-12 border-2 border-white text-white font-bold py-3 px-8 rounded-xl uppercase tracking-wider hover:bg-white hover:text-secondary transition duration-300 text-sm">
+                Ver Menú Completo
+            </button>
+        </div>
+    </section>
+
+    <hr class="border-gray-200 w-4/5 mx-auto">
+
+    <section class="h-screen flex items-center justify-center bg-gray-50 text-center">
+        <div class="container mx-auto px-4">
+            <p class="text-sm font-semibold text-primary uppercase tracking-widest mb-4">NUESTROS PILARES</p>
+            <h2 class="text-5xl font-bold mb-16 text-secondary">LA ESENCIA QUE NOS DEFINE</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                
+                <div class="text-center">
+                    <i class="fas fa-leaf text-5xl text-primary mb-4"></i>
+                    <h3 class="text-2xl font-bold mt-4 mb-3 text-secondary">INSUMOS ORGÁNICOS</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Compromiso con la Pachamama: Solo utilizamos ingredientes de origen andino, frescos y orgánicos, 
+                        cultivados por comunidades locales. Calidad que se siente en cada bocado.
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <i class="fas fa-graduation-cap text-5xl text-primary mb-4"></i>
+                    <h3 class="text-2xl font-bold mt-4 mb-3 text-secondary">RECETAS ANCESTRALES</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Nuestra cocina es un homenaje a las tradiciones de los Andes. Cada plato es ejecutado con 
+                        el respeto y la técnica de nuestros antepasados, buscando la perfección.
+                    </p>
+                </div>
+                
+                <div class="text-center">
+                    <i class="fas fa-handshake-angle text-5xl text-primary mb-4"></i>
+                    <h3 class="text-2xl font-bold mt-4 mb-3 text-secondary">SERVICIO DE LUJO</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Ofrecemos una experiencia culinaria completa, con un servicio impecable y un ambiente 
+                        que transporta a la majestuosidad de la cordillera.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="border-gray-200 w-4/5 mx-auto">
+
+    <section class="h-screen flex items-center justify-center bg-white">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center space-y-10 md:space-y-0 md:space-x-16">
+            <div class="md:w-1/2">
+                <img src="{{ url_for('static', filename='images/comidaAlta.png') }}"
+                    alt="Plato de alta cocina andina" class="w-full h-auto rounded-xl shadow-2xl">
+            </div>
+            <div class="md:w-1/2">
+                <div class="flex items-center space-x-4 mb-4">
+                    <i class="fas fa-quote-left text-5xl text-primary"></i>
+                    <h3 class="text-4xl font-bold text-secondary font-serif-custom">
+                        El sabor de la tradición con la elegancia del mañana.
+                    </h3>
+                </div>
+                <p class="text-xl text-gray-700 mb-8 leading-relaxed italic">
+                    "Sumaq Mikuy es más que un restaurante, es la experiencia gastronómica andina que deleita tus sentidos y 
+                    proyecta nuestra cultura al mundo."
+                </p>
+                <button
+                    class="bg-secondary text-white font-bold py-4 px-12 rounded-xl uppercase tracking-wider hover:bg-gray-700 transition duration-300 text-sm shadow-lg">
+                    Explora la Experiencia Sumaq
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contacto" class="relative h-screen flex items-center justify-center bg-secondary text-white bg-cover bg-center" 
+        style="background-image: url('{{ url_for('static', filename='images/textura3.png') }}');">
+        <div class="absolute inset-0 bg-secondary opacity-50"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-5xl font-bold mb-16 text-center text-primary">RESERVA TU EXPERIENCIA ANDINA</h2>
+            
+            <div class="flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-16">
+                <div class="md:w-1/2 bg-white p-8 rounded-xl shadow-2xl text-secondary">
+                    <h3 class="text-2xl font-bold mb-6">Contáctanos o únete a nuestro boletín</h3>
+                    <form action="#" method="POST" class="space-y-4">
+                        <input type="text" placeholder="Tu nombre completo" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        <input type="email" placeholder="Tu correo electrónico" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        <textarea placeholder="Mensaje (opcional para reservas especiales)" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                        <button type="submit" class="w-full bg-primary text-secondary font-bold py-3 px-4 rounded-lg uppercase tracking-wider hover:bg-yellow-500 transition duration-300 shadow-md">
+                            Enviar Solicitud
+                        </button>
+                    </form>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="text-xl space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <i class="fas fa-map-marker-alt text-2xl text-primary pt-1"></i>
+                            <p class="font-light">
+                                **Ubicación Principal:**<br>
+                                Calle Miraflores, San Luis, Cañete, Perú
+                            </p>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <i class="fas fa-phone-alt text-2xl text-primary pt-1"></i>
+                            <p class="font-light">
+                                **Teléfono:**<br>
+                                +51 980 046 019
+                            </p>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <i class="fas fa-envelope text-2xl text-primary pt-1"></i>
+                            <p class="font-light">
+                                **Correo:**<br>
+                                contacto@sumaqmikuy.com
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-8 bg-gray-700 h-64 w-full rounded-xl flex items-center justify-center shadow-inner">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d31095.047204560527!2d-76.43545299710728!3d-13.043252193435228!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1smiraflores%20san%20luis%20ca%C3%B1ete!5e0!3m2!1ses!2spe!4v1763678056062!5m2!1ses!2spe" class="rounded-md w-full h-full" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-6 text-center">
+        <div class="container mx-auto px-4">
+            <p class="text-sm">La experiencia gastronómica andina que deleita tus sentidos.</p>
+            <p class="mt-1 text-xs opacity-70">© 2025 Sumaq Mikuy. Todos los derechos reservados.</p>
+            <div class="flex justify-center space-x-4 mt-3 text-lg">
+                <i class="fab fa-facebook hover:text-primary transition"></i>
+                <i class="fab fa-instagram hover:text-primary transition"></i>
+                <i class="fab fa-tiktok hover:text-primary transition"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/carrusel.js') }}"></script>
+</body>
+</html>

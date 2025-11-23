@@ -1,0 +1,39 @@
+:root {
+            --color-primary: #FFD700;
+            /* Dorado Andino/Amarillo principal */
+            --color-secondary: #4A2E1F;
+            /* Marrón oscuro/tierra */
+        }
+
+        .text-primary {
+            color: var(--color-primary);
+        }
+
+        .bg-primary {
+            background-color: var(--color-primary);
+        }
+
+        .text-secondary {
+            color: var(--color-secondary);
+        }
+
+        .bg-secondary {
+            background-color: var(--color-secondary);
+        }
+
+        /* Uso de una fuente elegante para el logo, si no se tiene una específica */
+        .font-serif-custom {
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        /* Estilos generales para el cuerpo y transiciones */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .nav-fixed {
+            width: 100%;
+            left: 0;
+            right: 0;
+        }

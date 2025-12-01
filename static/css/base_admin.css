@@ -1,0 +1,24 @@
+/* Estilos específicos para la transición del sidebar en móvil */
+.sidebar-transition {
+  transition: transform 0.3s ease-in-out;
+}
+.sidebar-open {
+  transform: translateX(0);
+}
+.sidebar-closed {
+  transform: translateX(-100%);
+}
+/* Añadir un overlay para cerrar al hacer clic fuera en móvil */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 25; /* Entre el sidebar (30) y el contenido (1) */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+.overlay-active {
+  opacity: 1;
+  pointer-events: auto;
+}

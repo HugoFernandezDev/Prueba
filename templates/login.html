@@ -1,322 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sumaq Mikuy - Iniciar Sesión</title>
-    <!-- Carga de Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Estilos personalizados y variables de color */
-        :root {
-            --color-primary: #D97706; /* Amber-700 - Color cálido */
-            --color-secondary: #065F46; /* Emerald-700 - Contraste andino */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Fondo gris suave */
-        }
-        .btn-primary {
-            background-color: var(--color-primary);
-            transition: background-color 0.2s;
-        }
-        .btn-primary:hover {
-            background-color: #B45309; /* Darker amber */
-        }
-        
-        /* Contenedor principal con efecto de desenfoque de fondo */
-        .login-wrapper {
-            background-color: rgba(0, 0, 0, 0.4); /* Fondo semitransparente oscuro para el efecto de desenfoque */
-            background-image: url({{ url_for('static', filename='images/loginAdmin.png') }}); /* Imagen de fondo andina de alta resolución */
-            background-size: cover;
-            background-position: center;
-            backdrop-filter: blur(8px); /* Aplica el efecto de desenfoque */
-            -webkit-backdrop-filter: blur(8px); /* Compatibilidad con Safari */
-        }
+{% extends "base_public.html" %}
 
-        /* Columna de la imagen con filtro oscuro */
-        .image-column {
-            /* Usamos una imagen de placeholder que representa comida andina */
-            background-image: url({{ url_for('static', filename='images/loginAdmin.png') }});
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        /* Capa oscura (overlay) para hacer el texto del logo legible */
-        .image-overlay {
-            background: rgba(0, 0, 0, 0.5); /* 50% de opacidad */
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        /* Para el modo móvil, la columna de imagen se oculta */
-        @media (max-width: 768px) {
-            .image-column {
-                display: none;
-            }
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body class="login-wrapper flex items-center justify-center min-h-screen p-4">
-
-    <!-- Tarjeta Principal de Login/Registro (Estructura de 2 Columnas) -->
-    <div id="auth-card" class="card w-full max-w-4xl bg-white rounded-xl overflow-hidden shadow-2xl">
-        <div class="grid grid-cols-1 md:grid-cols-5 card-grid">
-            
-            <!-- Columna Izquierda (Imagen y Logo) - 2/5 del ancho -->
-            <div class="image-column md:col-span-2 p-6 flex flex-col items-center justify-center text-white relative">
-                <div class="image-overlay"></div>
-                <!-- Contenido sobre el overlay -->
-                <div class="relative z-10 text-center">
-                    <!-- Logo/Nombre del Restaurante -->
-                    <h1 class="text-6xl font-serif font-bold tracking-wider mb-2" style="font-family: Georgia, serif;">Login</h1>
-                    <p class="text-xl font-light tracking-widest uppercase">Admin</p>
-                </div>
-            </div>
-
-            <!-- Columna Derecha (Formulario) - 3/5 del ancho -->
-            <div id="form-content" class="md:col-span-3 p-8 sm:p-12 space-y-6">
-
-                <!-- Panel de Estado del Usuario (Una vez logueado) -->
-                <div id="user-status-panel" class="p-6 bg-green-50 text-center rounded-lg border-l-4 border-green-600 hidden">
-                    <h3 class="text-2xl font-semibold mb-2 text-green-800">¡Sesión Iniciada!</h3>
-                    <p id="auth-message" class="text-gray-700 mb-4"></p>
-                    <button id="sign-out-btn" class="bg-red-500 text-white py-2 px-4 rounded-lg font-medium shadow-md hover:bg-red-600 transition duration-150">
-                        Cerrar Sesión
-                    </button>
-                </div>
-
-                <!-- Panel de Login/Registro (Formulario) -->
-                <div id="auth-form-panel">
-                    <h2 id="form-title" class="text-3xl font-bold mb-2 text-gray-800">Iniciar Sesión</h2>
-                    <p class="text-gray-600 mb-6 text-sm">
-                        Bienvenido al sistema de Sumaq Mikuy. ¡Disfruta de la magia andina!
-                    </p>
-
-                    <!-- Formulario de Autenticación -->
-                    <form method="POST" id="auth-form" class="space-y-4">
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" id="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm" placeholder="activo@inputbox.com">
-                        </div>
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                            <input type="password" id="password" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm" placeholder="********">
-                        </div>
-
-                        <!-- Mensaje de Error -->
-                        <p id="error-message" class="text-sm text-red-600 font-medium h-5"></p>
-                        
-                        <div class="flex justify-center items-center">
-                            <button onclick="window.location.href = '{{ url_for('login') }}'" id="submit-btn" class="btn-primary text-white py-2 px-6 rounded-lg font-semibold shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition duration-150">
-                                INICIAR SESIÓN
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- Toggle entre Login y Registro -->
-                    <div class="mt-6 text-center">
-                        <p id="toggle-text" class="text-sm text-gray-600">
-                            <button type="button" class="text-sm text-gray-500 hover:text-amber-700 focus:outline-none">
-                                Recuperar Contraseña
-                            </button>
-                        </p>
-                    </div>
-                </div>
-            </div>
+{% block content %}
+<div class="flex items-center justify-center min-h-[70vh] py-10">
+    <div class="w-full max-w-md bg-white p-8 md:p-10 rounded-2xl shadow-2xl border border-gray-100">
+        <div class="text-center mb-8">
+            <i data-lucide="lock" class="w-12 h-12 mx-auto text-primary mb-4"></i>
+            <h1 class="text-3xl font-bold text-gray-900">Acceso Personal</h1>
+            <p class="text-gray-500 mt-2">Solo para Administradores y Mozas.</p>
         </div>
+        
+        <form action="{{ url_for('login') }}" method="POST" class="space-y-6">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                <input type="email" name="email" id="email" required
+                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-primary focus:border-primary transition duration-150 shadow-sm"
+                       placeholder="tu.usuario@sumakmikuy.com">
+            </div>
+            
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                <input type="password" name="password" id="password" required
+                       class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-primary focus:border-primary transition duration-150 shadow-sm"
+                       placeholder="••••••••">
+            </div>
+            
+            <button type="submit" class="w-full flex items-center justify-center 
+                    px-6 py-3 border border-transparent text-base font-semibold rounded-xl 
+                    text-white bg-gray-900 hover:bg-gray-700 transition duration-300 shadow-lg">
+                <i data-lucide="log-in" class="w-4 h-4 mr-2"></i>
+                Iniciar Sesión
+            </button>
+        </form>
     </div>
-
-    <!-- Script de Firebase y Lógica de Autenticación -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { 
-            getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, 
-            signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Configuración inicial de Firebase
-        setLogLevel('debug'); // Habilitar logs de depuración
-        
-        // Variables globales proporcionadas por el entorno de Canvas
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        if (Object.keys(firebaseConfig).length === 0) {
-            console.error("Error: firebaseConfig no está disponible o está vacío.");
-        }
-
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        // --- Elementos del DOM ---
-        const authFormPanel = document.getElementById('auth-form-panel');
-        const userStatusPanel = document.getElementById('user-status-panel');
-        const formTitle = document.getElementById('form-title');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const submitBtn = document.getElementById('submit-btn');
-        const toggleText = document.getElementById('toggle-text');
-        const errorMessage = document.getElementById('error-message');
-        const authForm = document.getElementById('auth-form');
-        const authMessage = document.getElementById('auth-message');
-        const signOutBtn = document.getElementById('sign-out-btn');
-
-        let isLoginMode = true; // Estado para alternar entre Login (true) y Registro (false)
-
-        // Función para manejar errores y mostrarlos en la UI
-        const displayError = (message) => {
-            errorMessage.textContent = message;
-        };
-
-        // Función para cambiar entre modos Login y Registro
-        const toggleAuthMode = () => {
-            isLoginMode = !isLoginMode;
-            errorMessage.textContent = ''; // Limpiar errores al cambiar de modo
-
-            if (isLoginMode) {
-                formTitle.textContent = 'Iniciar Sesión';
-                submitBtn.textContent = 'INICIAR SESIÓN';
-                toggleText.innerHTML = '¿No tienes cuenta? <button id="toggle-auth-mode" type="button" class="text-amber-600 font-medium hover:text-amber-700 focus:outline-none">Regístrate</button>';
-            } else {
-                formTitle.textContent = 'Crear Cuenta';
-                submitBtn.textContent = 'REGISTRARSE';
-                toggleText.innerHTML = '¿Ya tienes cuenta? <button id="toggle-auth-mode" type="button" class="text-amber-600 font-medium hover:text-amber-700 focus:outline-none">Iniciar Sesión</button>';
-            }
-
-            // Volver a adjuntar el listener al botón recién recreado
-            document.getElementById('toggle-auth-mode').addEventListener('click', toggleAuthMode);
-        };
-
-        // Manejador de envío del formulario
-        authForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            errorMessage.textContent = ''; // Limpiar mensaje de error anterior
-
-            if (password.length < 6) {
-                displayError("La contraseña debe tener al menos 6 caracteres.");
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = isLoginMode ? 'Iniciando...' : 'Registrando...';
-
-            try {
-                if (isLoginMode) {
-                    // Lógica de Inicio de Sesión
-                    await signInWithEmailAndPassword(auth, email, password);
-                } else {
-                    // Lógica de Registro
-                    await createUserWithEmailAndPassword(auth, email, password);
-                }
-            } catch (error) {
-                console.error("Error de autenticación:", error.code, error.message);
-                let userFriendlyMessage = 'Ocurrió un error. Inténtalo de nuevo.';
-
-                // Traducción de errores comunes de Firebase
-                switch (error.code) {
-                    case 'auth/invalid-email':
-                        userFriendlyMessage = 'El correo electrónico no es válido.';
-                        break;
-                    case 'auth/user-not-found':
-                    case 'auth/wrong-password':
-                        userFriendlyMessage = 'Correo o contraseña incorrectos.';
-                        break;
-                    case 'auth/email-already-in-use':
-                        userFriendlyMessage = 'Este correo electrónico ya está registrado.';
-                        break;
-                    case 'auth/weak-password':
-                        userFriendlyMessage = 'La contraseña es demasiado débil (mínimo 6 caracteres).';
-                        break;
-                    default:
-                        userFriendlyMessage = `Error: ${error.message.split('(')[0].trim()}`;
-                        break;
-                }
-                displayError(userFriendlyMessage);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = isLoginMode ? 'INICIAR SESIÓN' : 'REGISTRARSE';
-            }
-        });
-
-        // Manejador de Cierre de Sesión
-        signOutBtn.addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-            } catch (error) {
-                console.error("Error al cerrar sesión:", error);
-                authMessage.textContent = 'Error al cerrar sesión.';
-            }
-        });
-
-        const canvasSignIn = async () => {
-            try {
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                    console.log("Inicio de sesión de Canvas exitoso con token personalizado.");
-                } else {
-                    // Si no hay token, iniciamos sesión anónimamente para cumplir las reglas de seguridad
-                    await signInAnonymously(auth);
-                    console.log("Inicio de sesión anónimo exitoso.");
-                }
-            } catch (error) {
-                console.error("Error en la autenticación inicial de Canvas/Anónima:", error);
-            }
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // Usuario logueado
-                authFormPanel.classList.add('hidden');
-                userStatusPanel.classList.remove('hidden');
-
-                const isAnonymous = user.isAnonymous;
-                const email = user.email || 'Anónimo';
-                const displayName = isAnonymous ? 'Invitado' : user.email;
-
-                let message = `<span class="font-bold">${displayName}</span> (ID: ${user.uid.substring(0, 8)}...)`;
-                if(isAnonymous) {
-                    message = '¡Bienvenido(a) Invitado! Para guardar datos, regístrate o inicia sesión.';
-                } else {
-                    message = `¡Sesión iniciada! Bienvenido(a) ${email}.`;
-                }
-
-                authMessage.innerHTML = message;
-                signOutBtn.classList.remove('hidden');
-            } else {
-                // Usuario desconectado
-                authFormPanel.classList.remove('hidden');
-                userStatusPanel.classList.add('hidden');
-
-                // Resetear el modo a Login
-                if (!isLoginMode) {
-                    isLoginMode = true; // Forzar a modo Login
-                    toggleAuthMode();
-                }
-            }
-        });
-        
-        canvasSignIn();
-
-        document.addEventListener('click', (e) => {
-            if (e.target && e.target.id === 'toggle-auth-mode') {
-                toggleAuthMode();
-            }
-        });
-
-    </script>
-</body>
-</html>
+</div>
+{% endblock %}

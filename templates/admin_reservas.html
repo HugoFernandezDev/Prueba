@@ -1,0 +1,102 @@
+{% extends "base_admin.html" %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-200">
+    <div class="mb-6 flex justify-between items-center">
+        <h2 class="text-2xl font-semibold text-gray-800">Lista de Reservas Recientes</h2>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID / Cliente</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha y Hora</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Personas</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mesa Asignada</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for reserva in reservas %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-semibold text-gray-900">#{{ reserva.id }}</div>
+                        <div class="text-sm text-gray-500">{{ reserva.name }} ({{ reserva.email }})</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ reserva.reserva_at.strftime('%d/%m/%Y %H:%M') if reserva.reserva_at else 'N/A' }}</div>
+                        <div class="text-xs text-gray-500">{{ reserva.notas or 'Sin notas' }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ reserva.guests }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        {% if reserva.numero_mesa %}
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary/20 text-primary">
+                                Mesa {{ reserva.numero_mesa }}
+                            </span>
+                        {% else %}
+                            <span class="text-gray-500 italic">Pendiente</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        {% set status_class = {'pendiente': 'bg-yellow-100 text-yellow-800', 'confirmada': 'bg-green-100 text-green-800', 'cancelada': 'bg-red-100 text-red-800'}.get(reserva.status, 'bg-gray-100 text-gray-800') %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ status_class }} capitalize">
+                            {{ reserva.status }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        {% if reserva.status == 'pendiente' %}
+                            <!-- Formulario de Acción Rápida (Solo para pendiente) -->
+                            <form action="{{ url_for('update_reserva', reserva_id=reserva.id) }}" method="POST" class="inline-flex space-x-2" onsubmit="return confirm('¿Seguro que deseas CONFIRMAR esta reserva?');">
+                                <input type="hidden" name="status" value="confirmada">
+                                
+                                <!-- Selector de Mesa -->
+                                <select name="mesa_id" required class="text-xs border border-gray-300 rounded-lg p-1">
+                                    <option value="" disabled selected>Asignar Mesa</option>
+                                    {% for mesa in mesas %}
+                                        <option value="{{ mesa.id }}">{{ mesa.numero_mesa }} ({{ mesa.capacidad }}p)</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <button type="submit" class="text-green-600 hover:text-green-900 transition duration-150" title="Confirmar Reserva">
+                                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                                </button>
+                            </form>
+                            
+                            <form action="{{ url_for('update_reserva', reserva_id=reserva.id) }}" method="POST" class="inline-flex ml-2" onsubmit="return confirm('¿Seguro que deseas CANCELAR esta reserva?');">
+                                <input type="hidden" name="status" value="cancelada">
+                                <button type="submit" class="text-red-600 hover:text-red-900 transition duration-150" title="Cancelar Reserva">
+                                    <i data-lucide="x-circle" class="w-5 h-5"></i>
+                                </button>
+                            </form>
+                        {% elif reserva.status == 'confirmada' %}
+                            <span class="text-gray-500">
+                                <i data-lucide="info" class="w-4 h-4 inline mr-1"></i> Confirmada
+                            </span>
+                            <!-- Opción de Cancelar post-confirmación (opcional) -->
+                            <form action="{{ url_for('update_reserva', reserva_id=reserva.id) }}" method="POST" class="inline-flex ml-2" onsubmit="return confirm('¿Deseas CANCELAR la reserva ya confirmada?');">
+                                <input type="hidden" name="status" value="cancelada">
+                                <button type="submit" class="text-red-400 hover:text-red-600 transition duration-150" title="Cancelar Reserva">
+                                    <i data-lucide="undo" class="w-4 h-4"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <span class="text-gray-400">Finalizada</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                        No hay reservas registradas en este momento.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

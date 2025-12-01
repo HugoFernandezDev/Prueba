@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title }} | Sumak Mikuy Admin{% endblock %}</title>
+    
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet" />
+    <script src="{{ url_for('static', filename='js/config.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="{{ url_for('static', filename='css/base_admin.css') }}" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100 font-sans min-h-screen">
+    
+    <header class="md:hidden bg-white shadow-md p-4 flex justify-between items-center sticky top-0 z-40">
+        <div class="flex items-center">
+            <i data-lucide="utensils-crossed" class="w-6 h-6 text-primary"></i>
+            <span class="ml-2 text-xl font-bold text-gray-900">Panel</span>
+        </div>
+        <button id="sidebar-toggle" class="text-gray-700 focus:outline-none">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <div id="sidebar-overlay" class="overlay"></div>
+
+    <div class="flex md:min-h-screen">
+        
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-64 bg-gray-900 shadow-2xl 
+                                     md:relative md:translate-x-0 sidebar-transition sidebar-closed md:sidebar-open">
+            
+            <div class="p-6">
+                <a href="{{ url_for('index') }}" class="flex items-center text-white">
+                    <i data-lucide="utensils-crossed" class="w-8 h-8 text-secondary"></i>
+                    <span class="ml-3 text-2xl font-extrabold">Sumak Mikuy</span>
+                </a>
+            </div>
+
+            <div class="px-4 py-6 space-y-2">
+                <a href="{{ url_for('logout') }}" 
+                   class="flex items-center px-4 py-2 text-sm font-medium rounded-xl text-red-400 hover:bg-gray-800 hover:text-red-300 transition duration-150">
+                    <i data-lucide="log-out" class="w-5 h-5 mr-3"></i>
+                    Cerrar Sesión ({{ session.username }})
+                </a>
+                
+                <div class="border-t border-gray-700 my-4 pt-4"></div>
+
+                {% if session.rol == 'admin' %}
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">Administración</p>
+                    <a href="{{ url_for('admin_dashboard') }}" 
+                       class="flex items-center px-4 py-2 text-sm font-medium rounded-xl text-gray-300 hover:bg-primary/50 hover:text-white transition duration-150 {% if title == 'Admin Dashboard' %}bg-primary text-white shadow-md{% endif %}">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                        Dashboard
+                    </a>
+                    <a href="{{ url_for('admin_reservas') }}" 
+                       class="flex items-center px-4 py-2 text-sm font-medium rounded-xl text-gray-300 hover:bg-primary/50 hover:text-white transition duration-150 {% if title == 'Gestión de Reservas' %}bg-primary text-white shadow-md{% endif %}">
+                        <i data-lucide="book-open-check" class="w-5 h-5 mr-3"></i>
+                        Reservas
+                    </a>
+                    <a href="{{ url_for('admin_platos') }}" 
+                       class="flex items-center px-4 py-2 text-sm font-medium rounded-xl text-gray-300 hover:bg-primary/50 hover:text-white transition duration-150 {% if 'Platos' in title or 'Menús' in title %}bg-primary text-white shadow-md{% endif %}">
+                        <i data-lucide="chef-hat" class="w-5 h-5 mr-3"></i>
+                        Platos & Menús
+                    </a>
+                    <a href="{{ url_for('admin_usuarios') }}" 
+                       class="flex items-center px-4 py-2 text-sm font-medium rounded-xl text-gray-300 hover:bg-primary/50 hover:text-white transition duration-150 {% if title == 'Gestión de Usuarios' %}bg-primary text-white shadow-md{% endif %}">
+                        <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                        Usuarios
+                    </a>
+                {% endif %}
+                
+                {% if session.rol == 'moza' or session.rol == 'admin' %}
+                    <div class="border-t border-gray-700 my-4 pt-4"></div>
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">Operación</p>
+                    <a href="{{ url_for('moza_comandas') }}" 
+                       class="flex items-center px-4 py-2 text-sm font-medium rounded-xl text-gray-300 hover:bg-primary/50 hover:text-white transition duration-150 {% if 'Comandas' in title %}bg-primary text-white shadow-md{% endif %}">
+                        <i data-lucide="clipboard-list" class="w-5 h-5 mr-3"></i>
+                        Comandas y Mesas
+                    </a>
+                    {% endif %}
+            </div>
+        </aside>
+
+        <main class="flex-grow w-full p-4 md:p-8 z-10">
+            
+            <div class="mb-8 flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-800">{{ title }}</h1>
+                <p class="text-gray-600 hidden sm:block">Rol: <span class="capitalize font-semibold text-primary">{{ session.rol }}</span></p>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-6 space-y-3">
+                    {% for category, message in messages %}
+                        {% set bg_color = {'success': 'bg-green-100 border-green-400 text-green-700', 'danger': 'bg-red-100 border-red-400 text-red-700', 'warning': 'bg-yellow-100 border-yellow-400 text-yellow-700', 'info': 'bg-blue-100 border-blue-400 text-blue-700'}.get(category, 'bg-gray-100 border-gray-400 text-gray-700') %}
+                        <div class="p-4 border-l-4 rounded-lg {{ bg_color }} shadow-sm" role="alert">
+                            <p class="font-medium">{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/base_admin.js') }}"></script>
+</body>
+</html>
